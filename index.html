@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head></head>
+  <style>
+  body {
+    font-family: Sans-serif;
+  }
+
+  main, input, button {
+    font-size: inherit;
+    font-family: inherit;
+  }
+
+  main {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 8px 0;
+  }
+
+  form > div {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .input {
+    field-sizing: content;
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    border-radius: 4px;
+    padding: 0 12px;
+    height: 32px;
+    border: 1px solid #CCC;
+    font-size: 16px;
+  }
+
+  .label {
+    font-size: 18px;
+  }
+
+  .btn {
+    border: none;
+    outline: none;
+    display: inline-block;
+    height: 32px;
+    padding: 0 12px;
+    border-radius: 4px;
+    background-color: #0066FF;
+    color: #ffffff;
+    font-size: 16px;
+    text-decoration: none;
+    text-align: center;
+  }
+  .btn:hover {
+    background-color: #0055EE;
+  }
+  .btn:active {
+    background-color: #0033CC;
+  }
+
+  #output {
+    white-space: pre-wrap;
+    font-family: monospace;
+    background: #EEE;
+    padding: 4px;
+  }
+
+  </style>
+  <body>
+    <main>
+      <form method="POST" class="container">
+        <div>
+          <label for="key" class="label">ID:</label>
+          <input type="text" id="key" name="key" required class="input"></input>
+        </div>
+        <button type="submit" class="btn">Search</button>
+      </form>
+      <div class="container">
+        <span class="label">Output:</span>
+        <div id="output"></div>
+      <div>
+    </main>
+  </body>
+
+  <script lang="js">
+  const formElm = document.querySelector('form');
+  const outputElm = document.querySelector('#output');
+  const errorElm = document.querySelector('#error');
+
+  const p = document.querySelector('p');
+
+  formElm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    formElm.checkValidity();
+
+    const formData = new FormData(formElm);
+    const body = JSON.stringify(Object.fromEntries(formData.entries()));
+    try {
+      const res = await fetch('/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body,
+      });
+      const obj = await res.json();
+      outputElm.textContent = JSON.stringify(obj, null, 2);
+    } catch (err) {
+      console.error(err);
+    }
+  }, { passive: false });
+  </script>
+</html>
