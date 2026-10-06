@@ -1,0 +1,17 @@
+# SOKAWIFIでIPアドレスを手動設定する
+# /etc/netplan/ に配置し、sudo netplan apply を実行
+network:
+  version: 2
+  ethernets:
+    enp0s2:
+      dhcp4: false
+      addresses:
+        - 172.23.142.220/17 # 例
+      routes:
+        - to: default
+          via: 172.23.128.1
+      nameservers:
+        addresses: # 他でもよい
+          - 8.8.8.8
+          - 1.1.1.1
+
